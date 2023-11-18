@@ -1,0 +1,8 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Tags - Tag - 傻鸟的窝</title>
+        <link>https://dinduck.github.io/tags/</link>
+        <description>Tags - Tag - 傻鸟的窝</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>kfove.liang@protonmail.com (Lucky Ling)</managingEditor>
+            <webMaster>kfove.liang@protonmail.com (Lucky Ling)</webMaster><atom:link href="https://dinduck.github.io/tags/" rel="self" type="application/rss+xml" /></channel>
+</rss>
