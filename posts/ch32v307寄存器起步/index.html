@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Ch32v307寄存器起步 - 傻鸟的窝</title><meta name="Description" content="基于 LoveIt 摆烂搭建"><meta property="og:title" content="Ch32v307寄存器起步" />
+<meta property="og:description" content="手上有一张 ch32v307vct6 ， 我们将使用 svd2rust 和 form 这两工具， 通过 svd 文件生成相关的 Rust 外设库。 环境 确保当前你安装了 Rust # Linux curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sh 根据官网信息和数据手册 我们需" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dinduck.github.io/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-18T21:15:17+08:00" />
+<meta property="article:modified_time" content="2023-11-18T21:15:17+08:00" /><meta property="og:site_name" content="Lucky Ling" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Ch32v307寄存器起步"/>
+<meta name="twitter:description" content="手上有一张 ch32v307vct6 ， 我们将使用 svd2rust 和 form 这两工具， 通过 svd 文件生成相关的 Rust 外设库。 环境 确保当前你安装了 Rust # Linux curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sh 根据官网信息和数据手册 我们需"/>
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dinduck.github.io/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/" /><link rel="prev" href="https://dinduck.github.io/posts/test_post/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Ch32v307寄存器起步",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dinduck.github.io\/posts\/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5\/"
+        },"genre": "posts","wordcount":  1762 ,
+        "url": "https:\/\/dinduck.github.io\/posts\/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5\/","datePublished": "2023-11-18T21:15:17+08:00","dateModified": "2023-11-18T21:15:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "Lucky Ling"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="傻鸟的窝">My cool site</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="傻鸟的窝">My cool site</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Ch32v307寄存器起步</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Lucky Ling</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-11-18">2023-11-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1762 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境">环境</a></li>
+    <li><a href="#开干">开干</a></li>
+    <li><a href="#可执行文件">可执行文件</a></li>
+    <li><a href="#调试">调试</a></li>
+    <li><a href="#openocd">Openocd</a></li>
+    <li><a href="#下载方法">下载方法</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>手上有一张 <code>ch32v307vct6</code> ， 我们将使用 <code>svd2rust</code> 和 <code>form</code> 这两工具， 通过 svd 文件生成相关的 Rust 外设库。</p>
+<h2 id="环境">环境</h2>
+<p>确保当前你安装了  Rust</p>
+<pre tabindex="0"><code># Linux
+curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sh
+</code></pre><p>根据官网信息和数据手册
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/02/pyFz8iPgt5qClRY.png"
+        data-srcset="https://s2.loli.net/2023/11/02/pyFz8iPgt5qClRY.png, https://s2.loli.net/2023/11/02/pyFz8iPgt5qClRY.png 1.5x, https://s2.loli.net/2023/11/02/pyFz8iPgt5qClRY.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/02/pyFz8iPgt5qClRY.png"
+        title="image.png" />
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/02/x7C4hElZRDzW9cf.png"
+        data-srcset="https://s2.loli.net/2023/11/02/x7C4hElZRDzW9cf.png, https://s2.loli.net/2023/11/02/x7C4hElZRDzW9cf.png 1.5x, https://s2.loli.net/2023/11/02/x7C4hElZRDzW9cf.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/02/x7C4hElZRDzW9cf.png"
+        title="image.png" /></p>
+<p>我们需要安装相应的工具链， 保证我们可以正常编译</p>
+<pre tabindex="0"><code>rustup target add riscv32imac-unknown-none-elf
+</code></pre><p>我们的编译环境已经安装好了， 现在安装 <code>svd2rust</code> 和 <code>form</code> 这两工具</p>
+<pre tabindex="0"><code>cargo install svd2rust form
+</code></pre><p>现在开始将 svd 文件转换 lib 吧</p>
+<h2 id="开干">开干</h2>
+<p>可以从<a href="https://github.com/ch32-rs/ch32-rs" target="_blank" rel="noopener noreffer ">这里</a>找到相应的 <code>svd</code> 文件, 也是 ch32 官方的仓库，你可以关注更多信息。</p>
+<p>新建一个工程
+<code>cargo new ch32v3 --lib</code>
+进入工程目录</p>
+<pre tabindex="0"><code># 下载 svd 文件
+curl https://raw.githubusercontent.com/ch32-rs/ch32-rs/main/svd/fixed/ch32v30x.svd &gt; ch32v30x.svd
+# 开转
+svd2rust -g --target=riscv -i ch32v30x.svd
+</code></pre><p>当前目录生成了一个如下文件</p>
+<pre tabindex="0"><code>build.rs
+device.x
+generic.rs
+lib.rs
+</code></pre><p>我们使用 <code>form</code> 拆分 <code>lib.rs</code>, 由于所有的外设接口都存放在 <code>lib.rs</code></p>
+<pre tabindex="0"><code># 删除原有的 src 文件
+rm -rf src
+# 拆分 lib.rs 输出 src 并删除原有 lib.rs
+form -i lib.rs -o src/ &amp;&amp; rm lib.rs
+# 将 generic.rs 移入 src
+mv generic.rs src
+# 格式化代码, 原来的代码紧凑
+cargo fmt
+</code></pre><p>。。。
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/02/XTyxfjwREFDYa12.png"
+        data-srcset="https://s2.loli.net/2023/11/02/XTyxfjwREFDYa12.png, https://s2.loli.net/2023/11/02/XTyxfjwREFDYa12.png 1.5x, https://s2.loli.net/2023/11/02/XTyxfjwREFDYa12.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/02/XTyxfjwREFDYa12.png"
+        title="image.png" />
+这些都是外设库</p>
+<p>在 <code>Cargo.toml</code> 添加如下 crate</p>
+<pre tabindex="0"><code>[dependencies]
+critical-section = { version = &#34;1.1.2&#34;, optional = true }
+riscv = { version = &#34;0.10.1&#34;, features = [&#34;critical-section-single-hart&#34;] }
+riscv-rt = { version = &#34;0.11.0&#34;, optional = true }
+vcell = &#34;0.1.3&#34;
+
+[features]
+rt = [&#34;riscv-rt&#34;, &#34;critical-section&#34;]
+</code></pre><p>你可以通过 <code>cargo doc</code>  生成文档, 这里没有可执行文件， 我们只是建立一个寄存器库而已</p>
+<h2 id="可执行文件">可执行文件</h2>
+<p>创建一个项目  <code>cargo new app</code>
+编辑 <code>Cargo.toml</code></p>
+<pre tabindex="0"><code>[dependencies]
+ch32v3 = { version = &#34;0.1.0&#34;, path = &#34;../ch32v3&#34;, features=[&#34;rt&#34;] }
+panic-halt = &#34;0.2.0&#34;
+riscv = &#34;0.10.1&#34;
+riscv-rt = &#34;0.11.0&#34;
+</code></pre><p>编辑 <code>memory.x</code>, 这是我们的链接脚本, 通用的链接脚本由 <code>riscv-rt</code> 提供，  这里工具设备而定</p>
+<pre tabindex="0"><code>MEMORY
+{
+  /* NOTE 1 K = 1 KiBi = 1024 bytes */
+  /* TODO Adjust these memory regions to match your device memory layout */
+  /* These values correspond to the LM3S6965, one of the few devices QEMU can emulate */
+  FLASH : ORIGIN = 0x00000000, LENGTH = 256K
+  RAM : ORIGIN = 0x20000000, LENGTH = 64K
+}
+REGION_ALIAS(&#34;REGION_TEXT&#34;, FLASH);
+REGION_ALIAS(&#34;REGION_RODATA&#34;, FLASH);
+REGION_ALIAS(&#34;REGION_DATA&#34;, RAM);
+REGION_ALIAS(&#34;REGION_BSS&#34;, RAM);
+REGION_ALIAS(&#34;REGION_HEAP&#34;, RAM);
+REGION_ALIAS(&#34;REGION_STACK&#34;, RAM);
+</code></pre><p>编辑 <code>.cargo/config</code>  搞定编译设置</p>
+<pre tabindex="0"><code>[build]
+target=&#34;riscv32imac-unknown-none-elf&#34;
+
+
+[target.riscv32imac-unknown-none-elf]
+rustflags = [
+  &#34;-C&#34;, &#34;link-arg=-Tmemory.x&#34;,
+  &#34;-C&#34;, &#34;link-arg=-Tlink.x&#34;,
+]
+</code></pre><p>注意 <code>memory.x</code> 必须在 <code>link.x</code> 前面，否则在链接时会爆出内存范围未定义的错误,  你也可以通过编写 <code>build.rs</code> 声明编译选项。参考<a href="https://course.rs/cargo/reference/build-script/intro.html" target="_blank" rel="noopener noreffer ">圣经</a></p>
+<p>接下来是我们的 <code>src/main.rs</code></p>
+<pre tabindex="0"><code>#![no_std]
+#![no_main]
+
+use panic_halt as _;
+use riscv_rt::entry;
+
+#[entry]
+fn main() -&gt; ! {
+    let pac = ch32v3::Peripherals::take().unwrap();
+    let gpioa = &amp;pac.GPIOA;
+    gpioa.outdr.write(|w| w.odr0().set_bit());
+    loop {}
+}
+</code></pre><p>代码非常简单， 虽然不是电灯。</p>
+<p><code>cargo build</code> 编译代码
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/02/yIalRobjiNxhref.png"
+        data-srcset="https://s2.loli.net/2023/11/02/yIalRobjiNxhref.png, https://s2.loli.net/2023/11/02/yIalRobjiNxhref.png 1.5x, https://s2.loli.net/2023/11/02/yIalRobjiNxhref.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/02/yIalRobjiNxhref.png"
+        title="image.png" /></p>
+<p>。。。
+没啥好说的， 这里我们从 <code>svd</code> 搭建一个寄存器库， 提供给我们使用, 关于 HAL 我无 fuck 说。
+接下来会教怎么调试。</p>
+<h2 id="调试">调试</h2>
+<p>烧录器我们使用板子自带的 WCH</p>
+<h2 id="openocd">Openocd</h2>
+<p>官方的 Openocd 并不支持 WCH, 所以我们需要下载山河IDE提供的包
+你可以从<a href="https://github.com/openwch/openocd_wch" target="_blank" rel="noopener noreffer ">这里</a>查看源码, 编译好的包可以从<a href="http://file.mounriver.com/tools/MRS_Toolchain_Linux_x64_V1.50.tar.xz" target="_blank" rel="noopener noreffer ">这里</a>下载。直接参照<a href="https://www.cnblogs.com/milton/p/16486681.html" target="_blank" rel="noopener noreffer ">这篇博客</a>, 这里不赘述。</p>
+<p>在 <code>ArchLinux</code> 上的gdb调试包使用的是 <code>riscv64-elf-gdb</code>, 你可能会在其他平台看见 <code>riscv-none-elf-gdb</code> 反正都能用。</p>
+<pre tabindex="0"><code># yay -S riscv64-elf-gdb
+paru -S riscv64-elf-gdb
+</code></pre><p>然后将 <code>wch-riscv.cfg</code> 复制到项目目录。开启调试。</p>
+<pre tabindex="0"><code>openocd -f wch-riscv.cfg
+</code></pre><p>根据输出信息， 我们使用 GDB 开始调试</p>
+<pre tabindex="0"><code>riscv64-elf-gdb target/riscv32imac-unknown-none-elf/debug/app
+</code></pre><p>进入 gdb 控制台后</p>
+<pre tabindex="0"><code># 连接 Openocd
+target remote :3333
+# 下载程序
+load
+# 使用 TUI
+layout next
+# 设置断点
+b main
+# 继续代码，遇断点停止
+c
+</code></pre><p>我们发现我们编写的 <code>main</code> 函数, 实际上 <code>app</code> 是一个elf文件， 我们通过 Openocd + GDB 方式将代码下载至我们的单片机上。ELF 文件里面内涵程序的元数据， 所有在下载时我们不需要指定的下载地址。
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/14/Nr5edb6MloX1KLU.png"
+        data-srcset="https://s2.loli.net/2023/11/14/Nr5edb6MloX1KLU.png, https://s2.loli.net/2023/11/14/Nr5edb6MloX1KLU.png 1.5x, https://s2.loli.net/2023/11/14/Nr5edb6MloX1KLU.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/14/Nr5edb6MloX1KLU.png"
+        title="image.png" /></p>
+<p>我们可以使用如下导出二进制文件</p>
+<pre tabindex="0"><code>rust-objcopy --strip-all target/riscv32imac-unknown-none-elf/release/app -O binary target/riscv32imac-unknown-none-elf/release/app.bin
+</code></pre><p>对比下大小
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/02/8fbkh2HXVmesCtO.png"
+        data-srcset="https://s2.loli.net/2023/11/02/8fbkh2HXVmesCtO.png, https://s2.loli.net/2023/11/02/8fbkh2HXVmesCtO.png 1.5x, https://s2.loli.net/2023/11/02/8fbkh2HXVmesCtO.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/02/8fbkh2HXVmesCtO.png"
+        title="image.png" />
+非常小了</p>
+<h2 id="下载方法">下载方法</h2>
+<p>上面那种使用 Openocd + GDB 的下载方式是可取的，这里介绍另外两种下载方式。
+在 <a href="https://github.com/ch32-rs/ch32-rs" target="_blank" rel="noopener noreffer "><code>ch32-rs</code></a>可以看到另外两个 <code>wchisp</code> 和 <code>wlink</code></p>
+<pre tabindex="0"><code># wlink
+cargo install --git https://github.com/ch32-rs/wlink
+# wchisp
+cargo install wchisp --git https://github.com/ch32-rs/wchisp
+</code></pre><p>默认 User 组是没有 WCH 设备权限的， 这里添加一下 <code>udev rules</code>
+分别是 <code>50-wch.rules</code> 和 <code>60-openocd.rules</code>, 这两文件可以从山河IDE提供的 Linux 工具链里面找到。
+<code>50-wch.rules</code></p>
+<pre tabindex="0"><code>SUBSYSTEM==&#34;usb&#34;, ATTR{idVendor}=&#34;1a86&#34;, ATTR{idProduct}==&#34;8010&#34;, GROUP=&#34;plugdev&#34;
+
+SUBSYSTEM==&#34;usb&#34;, ATTR{idVendor}=&#34;4348&#34;, ATTR{idProduct}==&#34;55e0&#34;, GROUP=&#34;plugdev&#34;
+SUBSYSTEM==&#34;usb&#34;, ATTR{idVendor}=&#34;1a86&#34;, ATTR{idProduct}==&#34;8012&#34;, GROUP=&#34;plugdev&#34;
+</code></pre><p><code>60-openocd.rules</code> 这里还有其他非 <code>wch</code> 设备的规则。</p>
+<pre tabindex="0"><code># Copy this file to /etc/udev/rules.d/
+# If rules fail to reload automatically, you can refresh udev rules
+# with the command &#34;udevadm control --reload&#34;
+
+ACTION!=&#34;add|change&#34;, GOTO=&#34;openocd_rules_end&#34;
+SUBSYSTEM!=&#34;usb|tty|hidraw&#34;, GOTO=&#34;openocd_rules_end&#34;
+
+# Please keep this list sorted by VID:PID
+
+# opendous and estick
+ATTRS{idVendor}==&#34;03eb&#34;, ATTRS{idProduct}==&#34;204f&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Original FT232/FT245 VID:PID
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;6001&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Original FT2232 VID:PID
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;6010&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Original FT4232 VID:PID
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;6011&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Original FT232H VID:PID
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;6014&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# DISTORTEC JTAG-lock-pick Tiny 2
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;8220&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# TUMPA, TUMPA Lite
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;8a98&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;8a99&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# XDS100v2
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;a6d0&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Xverve Signalyzer Tool (DT-USB-ST), Signalyzer LITE (DT-USB-SLITE)
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;bca0&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;bca1&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# TI/Luminary Stellaris Evaluation Board FTDI (several)
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;bcd9&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# TI/Luminary Stellaris In-Circuit Debug Interface FTDI (ICDI) Board
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;bcda&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# egnite Turtelizer 2
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;bdc8&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Section5 ICEbear
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;c140&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;c141&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Amontec JTAGkey and JTAGkey-tiny
+ATTRS{idVendor}==&#34;0403&#34;, ATTRS{idProduct}==&#34;cff8&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# TI ICDI
+ATTRS{idVendor}==&#34;0451&#34;, ATTRS{idProduct}==&#34;c32a&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# STMicroelectronics ST-LINK V1
+ATTRS{idVendor}==&#34;0483&#34;, ATTRS{idProduct}==&#34;3744&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# STMicroelectronics ST-LINK/V2
+ATTRS{idVendor}==&#34;0483&#34;, ATTRS{idProduct}==&#34;3748&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# STMicroelectronics ST-LINK/V2.1
+ATTRS{idVendor}==&#34;0483&#34;, ATTRS{idProduct}==&#34;374b&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;0483&#34;, ATTRS{idProduct}==&#34;3752&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# STMicroelectronics STLINK-V3
+ATTRS{idVendor}==&#34;0483&#34;, ATTRS{idProduct}==&#34;374d&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;0483&#34;, ATTRS{idProduct}==&#34;374e&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;0483&#34;, ATTRS{idProduct}==&#34;374f&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;0483&#34;, ATTRS{idProduct}==&#34;3753&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Cypress KitProg in KitProg mode
+ATTRS{idVendor}==&#34;04b4&#34;, ATTRS{idProduct}==&#34;f139&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Cypress KitProg in CMSIS-DAP mode
+ATTRS{idVendor}==&#34;04b4&#34;, ATTRS{idProduct}==&#34;f138&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Cypress KitProg in CMSIS-DAP mode
+ATTRS{idVendor}==&#34;1a86&#34;, ATTRS{idProduct}==&#34;8011&#34;, MODE=&#34;666&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+ATTRS{idVendor}==&#34;1a86&#34;, ATTRS{idProduct}==&#34;8012&#34;, MODE=&#34;666&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Hilscher NXHX Boards
+ATTRS{idVendor}==&#34;0640&#34;, ATTRS{idProduct}==&#34;0028&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Hitex STR9-comStick
+ATTRS{idVendor}==&#34;0640&#34;, ATTRS{idProduct}==&#34;002c&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Hitex STM32-PerformanceStick
+ATTRS{idVendor}==&#34;0640&#34;, ATTRS{idProduct}==&#34;002d&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Altera USB Blaster
+ATTRS{idVendor}==&#34;09fb&#34;, ATTRS{idProduct}==&#34;6001&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Amontec JTAGkey-HiSpeed
+ATTRS{idVendor}==&#34;0fbb&#34;, ATTRS{idProduct}==&#34;1000&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# SEGGER J-Link
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;0101&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;0102&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;0103&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;0104&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;0105&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;0107&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;0108&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;1010&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;1011&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;1012&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;1013&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;1014&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;1015&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;1016&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;1017&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;1366&#34;, ATTRS{idProduct}==&#34;1018&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+#wch_link
+ATTRS{idVendor}==&#34;1a86&#34;, ATTRS{idProduct}==&#34;8010&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Raisonance RLink
+ATTRS{idVendor}==&#34;138e&#34;, ATTRS{idProduct}==&#34;9000&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Debug Board for Neo1973
+ATTRS{idVendor}==&#34;1457&#34;, ATTRS{idProduct}==&#34;5118&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Olimex ARM-USB-OCD
+ATTRS{idVendor}==&#34;15ba&#34;, ATTRS{idProduct}==&#34;0003&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Olimex ARM-USB-OCD-TINY
+ATTRS{idVendor}==&#34;15ba&#34;, ATTRS{idProduct}==&#34;0004&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Olimex ARM-JTAG-EW
+ATTRS{idVendor}==&#34;15ba&#34;, ATTRS{idProduct}==&#34;001e&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Olimex ARM-USB-OCD-TINY-H
+ATTRS{idVendor}==&#34;15ba&#34;, ATTRS{idProduct}==&#34;002a&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Olimex ARM-USB-OCD-H
+ATTRS{idVendor}==&#34;15ba&#34;, ATTRS{idProduct}==&#34;002b&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# USBprog with OpenOCD firmware
+ATTRS{idVendor}==&#34;1781&#34;, ATTRS{idProduct}==&#34;0c63&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# TI/Luminary Stellaris In-Circuit Debug Interface (ICDI) Board
+ATTRS{idVendor}==&#34;1cbe&#34;, ATTRS{idProduct}==&#34;00fd&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# TI XDS110 Debug Probe (Launchpads and Standalone)
+ATTRS{idVendor}==&#34;0451&#34;, ATTRS{idProduct}==&#34;bef3&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# TI Tiva-based ICDI and XDS110 probes in DFU mode
+ATTRS{idVendor}==&#34;1cbe&#34;, ATTRS{idProduct}==&#34;00ff&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Ambiq Micro EVK and Debug boards.
+ATTRS{idVendor}==&#34;2aec&#34;, ATTRS{idProduct}==&#34;6010&#34;, MODE=&#34;664&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;2aec&#34;, ATTRS{idProduct}==&#34;6011&#34;, MODE=&#34;664&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+ATTRS{idVendor}==&#34;2aec&#34;, ATTRS{idProduct}==&#34;1106&#34;, MODE=&#34;664&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Marvell Sheevaplug
+ATTRS{idVendor}==&#34;9e88&#34;, ATTRS{idProduct}==&#34;9e8f&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# Keil Software, Inc. ULink
+ATTRS{idVendor}==&#34;c251&#34;, ATTRS{idProduct}==&#34;2710&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+# CMSIS-DAP compatible adapters
+ATTRS{product}==&#34;*CMSIS-DAP*&#34;, MODE=&#34;660&#34;, GROUP=&#34;plugdev&#34;, TAG+=&#34;uaccess&#34;
+
+LABEL=&#34;openocd_rules_end&#34;
+</code></pre><p>wlink效果展示</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/14/luHz5JNMrn8sCdq.png"
+        data-srcset="https://s2.loli.net/2023/11/14/luHz5JNMrn8sCdq.png, https://s2.loli.net/2023/11/14/luHz5JNMrn8sCdq.png 1.5x, https://s2.loli.net/2023/11/14/luHz5JNMrn8sCdq.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/14/luHz5JNMrn8sCdq.png"
+        title="image.png" /></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-11-18</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dinduck.github.io/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/" data-title="Ch32v307寄存器起步"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dinduck.github.io/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://dinduck.github.io/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/" data-title="Ch32v307寄存器起步"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://dinduck.github.io/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/" data-title="Ch32v307寄存器起步"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://dinduck.github.io/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/" data-title="Ch32v307寄存器起步"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/test_post/" class="prev" rel="prev" title="Test_post"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Test_post</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.120.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Lucky Ling</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

@@ -2,11 +2,19 @@
     <channel>
         <title>傻鸟的窝</title>
         <link>https://dinduck.github.io/</link>
-        <description>This is my cool site</description>
+        <description>基于 LoveIt 摆烂搭建</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>kfove.liang@protonmail.com (Lucky Ling)</managingEditor>
-            <webMaster>kfove.liang@protonmail.com (Lucky Ling)</webMaster><lastBuildDate>Sat, 18 Nov 2023 15:58:52 &#43;0800</lastBuildDate>
+            <webMaster>kfove.liang@protonmail.com (Lucky Ling)</webMaster><lastBuildDate>Sat, 18 Nov 2023 21:15:17 &#43;0800</lastBuildDate>
             <atom:link href="https://dinduck.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Ch32v307寄存器起步</title>
+    <link>https://dinduck.github.io/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/</link>
+    <pubDate>Sat, 18 Nov 2023 21:15:17 &#43;0800</pubDate>
+    <author>Lucky Ling</author>
+    <guid>https://dinduck.github.io/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/</guid>
+    <description><![CDATA[手上有一张 ch32v307vct6 ， 我们将使用 svd2rust 和 form 这两工具， 通过 svd 文件生成相关的 Rust 外设库。 环境 确保当前你安装了 Rust # Linux curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sh 根据官网信息和数据手册 我们需]]></description>
+</item>
+<item>
     <title>Test_post</title>
     <link>https://dinduck.github.io/posts/test_post/</link>
     <pubDate>Sat, 18 Nov 2023 15:58:52 &#43;0800</pubDate>
