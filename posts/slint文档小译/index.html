@@ -28,7 +28,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/dinduck.github.io\/posts\/slint%E6%96%87%E6%A1%A3%E5%B0%8F%E8%AF%91\/"
-        },"genre": "posts","wordcount":  1918 ,
+        },"genre": "posts","wordcount":  3650 ,
         "url": "https:\/\/dinduck.github.io\/posts\/slint%E6%96%87%E6%A1%A3%E5%B0%8F%E8%AF%91\/","datePublished": "2023-11-22T16:13:53+08:00","dateModified": "2023-11-22T16:13:53+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -70,8 +70,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Slint文档小译</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Lucky Ling</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-11-22">2023-11-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1918 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-11-22">2023-11-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;3650 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;8 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -83,12 +83,13 @@
     <li><a href="#准备">准备</a></li>
     <li><a href="#修改-cargotoml">修改 <code>Cargo.toml</code></a></li>
     <li><a href="#修改-buildrs">修改 <code>build.rs</code></a></li>
-    <li><a href="#应用结构">应用结构</a>
-      <ul>
-        <li><a href="#platform-特征"><code>Platform</code> 特征</a></li>
-        <li><a href="#事件循环">事件循环</a></li>
-      </ul>
-    </li>
+    <li><a href="#应用结构">应用结构</a></li>
+    <li><a href="#platform-特征"><code>Platform</code> 特征</a></li>
+    <li><a href="#事件循环">事件循环</a></li>
+    <li><a href="#渲染">渲染</a></li>
+    <li><a href="#渲染至缓冲区">渲染至缓冲区</a></li>
+    <li><a href="#逐行渲染">逐行渲染</a></li>
+    <li><a href="#示例实现">示例实现</a></li>
   </ul>
 </nav></div>
             </div><div class="content" id="content"><h1 id="module-slintdocsmcu">Module slint::docs::mcu</h1>
@@ -167,7 +168,7 @@ slint-build = &#34;1.3.0&#34;
 <li>通过查询外设输入、将输入转入应用程序的计算模块以及指示 Slint 渲染用户界面，自行驱动事件循环。</li>
 </ul>
 <p>在 Slint 中，完成这些任务需要使用两个主要 API：<code>slint::platform::Platform</code> 特征和 <code>slint::Window</code> 结构。在下面的章节中，我们将介绍如何使用它们以及如何将它们集成到事件循环中。</p>
-<h3 id="platform-特征"><code>Platform</code> 特征</h3>
+<h2 id="platform-特征"><code>Platform</code> 特征</h2>
 <p><code>slint::platform::Platform</code> 特征定义了 Slint 与通常由操作系统和窗口系统提供的平台 API 之间的接口。</p>
 <p>在构建 Slint 应用程序之前，您需要提供该特性的最小实现，并调用 <code>slint::platform::set_platform</code>。</p>
 <p>这种最低限度的实施需要涵盖两个功能：</p>
@@ -229,9 +230,162 @@ slint-build = &#34;1.3.0&#34;
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// ... start event loop (see later) ...
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h3 id="事件循环">事件循环</h3>
+</span></span></span></code></pre></div><h2 id="事件循环">事件循环</h2>
 <p>有了 <code>Platform</code>，就可以编写主循环事件来驱动所有不同的任务。</p>
 <p>您可以从两个选项中进行选择：</p>
+<ul>
+<li>您可以实现 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/platform/trait.Platform.html#method.run_event_loop" target="_blank" rel="noopener noreffer "><code>slint::platform::Platform::run_event_loop</code></a>：如果你想以类似桌面平台的方式启动事件循环，可以使用该函数，使用组件的 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/trait.ComponentHandle.html#tymethod.run" target="_blank" rel="noopener noreffer "><code>run()</code></a> 函数，或者使用 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/fn.run_event_loop.html" target="_blank" rel="noopener noreffer "><code>slint::run_event_loop()</code></a>。这两个函数都将调用你的 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/platform/trait.Platform.html#method.run_event_loop" target="_blank" rel="noopener noreffer "><code>slint::platform::Platform::run_event_loop</code></a> 的实现。</li>
+<li>执行循环 <code>loop { ...}</code> 直接在主函数中执行：这被称为超级循环架构，常见于在 MCU 裸机环境中运行的程序。它允许您初始化设备外设并访问它们，而无需将它们移至 <code>Platform</code> 实现中。</li>
+</ul>
+<p>使用 Slint 的典型超级循环结合了查询输入驱动程序、应用程序特定计算、渲染以及可能使设备进入低功耗睡眠状态等任务。下面是一个示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Rust" data-lang="Rust"><span class="line"><span class="cl"><span class="k">use</span><span class="w"> </span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">software_renderer</span>::<span class="n">MinimalSoftwareWindow</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">let</span><span class="w"> </span><span class="n">window</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MinimalSoftwareWindow</span>::<span class="n">new</span><span class="p">(</span><span class="nb">Default</span>::<span class="n">default</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">//...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">loop</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Let Slint run the timer hooks and update animations.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">update_timers_and_animations</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Check the touch screen or input device using your driver.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nb">Some</span><span class="p">(</span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">check_for_touch_event</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// convert the event from the driver into a `slint::platform::WindowEvent`
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="c1">// and pass it to the window.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="n">window</span><span class="p">.</span><span class="n">dispatch_event</span><span class="p">(</span><span class="n">event</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// ... maybe some more application logic ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Draw the scene if something needs to be drawn.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">window</span><span class="p">.</span><span class="n">draw_if_needed</span><span class="p">(</span><span class="o">|</span><span class="n">renderer</span><span class="o">|</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// see next section about rendering.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="fm">todo!</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">});</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Try to put the MCU to sleep
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">!</span><span class="n">window</span><span class="p">.</span><span class="n">has_active_animations</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nb">Some</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">duration_until_next_timer_update</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// ... schedule a timer interrupt in `duration` ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">hal</span>::<span class="n">wfi</span><span class="p">();</span><span class="w"> </span><span class="c1">// Wait for interrupt
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><h2 id="渲染">渲染</h2>
+<p>在台式机和嵌入式环境中，Slint 通常使用操作系统提供的应用程序接口，利用 GPU 渲染用户界面。相比之下，大多数 MCU 都没有 GPU。取而代之的是软件渲染，所有渲染都由 CPU 上的软件完成。Slint 为这项任务提供了软件渲染器（SoftwareRenderer）。</p>
+<p>在前面的示例中，我们实例化了一个 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/platform/software_renderer/struct.MinimalSoftwareWindow.html" target="_blank" rel="noopener noreffer "><code>slint::platform::software_renderer::MinimalSoftwareWindow</code></a> 结构。该结构体实现了<code> slint::platform::WindowAdapter</code> 特性，同时还持有一个 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/platform/software_renderer/struct.SoftwareRenderer.html" target="_blank" rel="noopener noreffer "><code>slint::platform::software_renderer::SoftwareRenderer</code></a> 的句柄。您可以通过 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/platform/software_renderer/struct.MinimalSoftwareWindow.html#method.draw_if_needed" target="_blank" rel="noopener noreffer "><code>draw_if_needed()</code></a> 函数的回调参数访问它。根据微控制器的 RAM 容量和所连接的屏幕类型，您可以选择两种不同的方法来使用渲染器：</p>
+<ul>
+<li>如果有足够的 RAM 来分配整个屏幕（也称为帧缓冲区）的一份甚至两份副本，请使用 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/platform/software_renderer/struct.SoftwareRenderer.html#method.render" target="_blank" rel="noopener noreffer "><code>SoftwareRenderer::render()</code></a> 函数。</li>
+<li>使用 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/platform/software_renderer/struct.SoftwareRenderer.html#method.render_by_line" target="_blank" rel="noopener noreffer "><code>SoftwareRenderer::render_by_line()</code></a> 函数逐行渲染整个用户界面，并通常通过 SPI 将每行像素发送到屏幕。这至少需要分配足够的 RAM 来存储一行像素。</li>
+</ul>
+<p>通过这两种方法，Slint 会将图像渲染到提供的缓冲区中，缓冲区是实现 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/platform/software_renderer/trait.TargetPixel.html" target="_blank" rel="noopener noreffer "><code>slint::platform::software_renderer::TargetPixel</code></a> 特性的类型的片段。为方便起见，Slint 提供了 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/type.Rgb8Pixel.html" target="_blank" rel="noopener noreffer "><code>slint::Rgb8Pixel</code></a> 和 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/platform/software_renderer/struct.Rgb565Pixel.htm" target="_blank" rel="noopener noreffer "><code>slint::platform::software_renderer::Rgb565Pixel</code></a> 的实现。</p>
+<h2 id="渲染至缓冲区">渲染至缓冲区</h2>
+<p>下面的示例使用双缓冲并在两个缓冲区之间交换。这需要图形驱动程序获取当前显示的帧缓冲区（也称为前缓冲区）的地址。然后，一个专用芯片负责从 RAM 读取并将内容传输到连接的屏幕上，CPU 不会有任何干扰。与此同时，Slint 会将内容渲染到第二个缓冲区，即后缓冲区。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Rust" data-lang="Rust"><span class="line"><span class="cl"><span class="k">use</span><span class="w"> </span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">software_renderer</span>::<span class="n">Rgb565Pixel</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// In this example, we have two buffer: one is currently displayed, and we are
+</span></span></span><span class="line"><span class="cl"><span class="c1">// rendering into the second one. Hence we use `RepaintBufferType::SwappedBuffers`
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">let</span><span class="w"> </span><span class="n">window</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">software_renderer</span>::<span class="n">MinimalSoftwareWindow</span>::<span class="n">new</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">software_renderer</span>::<span class="n">RepaintBufferType</span>::<span class="n">SwappedBuffers</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">const</span><span class="w"> </span><span class="no">DISPLAY_WIDTH</span>: <span class="kt">usize</span> <span class="o">=</span><span class="w"> </span><span class="mi">320</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">const</span><span class="w"> </span><span class="no">DISPLAY_HEIGHT</span>: <span class="kt">usize</span> <span class="o">=</span><span class="w"> </span><span class="mi">240</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">buffer1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">Rgb565Pixel</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="no">DISPLAY_WIDTH</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="no">DISPLAY_HEIGHT</span><span class="p">];</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">buffer2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">Rgb565Pixel</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="no">DISPLAY_WIDTH</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="no">DISPLAY_HEIGHT</span><span class="p">];</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// ... configure the screen driver to use buffer1 or buffer2 ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// ... rest of initialization ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">currently_displayed_buffer</span><span class="w"> </span>: <span class="kp">&amp;</span><span class="nc">mut</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">buffer1</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">work_buffer</span><span class="w"> </span>: <span class="kp">&amp;</span><span class="nc">mut</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">buffer2</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">loop</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="c1">// Draw the scene if something needs to be drawn
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">window</span><span class="p">.</span><span class="n">draw_if_needed</span><span class="p">(</span><span class="o">|</span><span class="n">renderer</span><span class="o">|</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// The screen driver might be taking some time to do the swap. We need to wait until
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="c1">// work_buffer is ready to be written in
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="n">is_swap_pending</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// Do the rendering!
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="n">renderer</span><span class="p">.</span><span class="n">render</span><span class="p">(</span><span class="n">work_buffer</span><span class="p">,</span><span class="w"> </span><span class="no">DISPLAY_WIDTH</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// tell the screen driver to display the other buffer.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="n">swap_buffers</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// Swap the buffer references for our next iteration
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="c1">// (this just swap the reference, not the actual data)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="n">core</span>::<span class="n">mem</span>::<span class="n">swap</span>::<span class="o">&lt;&amp;</span><span class="k">mut</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">work_buffer</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">currently_displayed_buffer</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">});</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><h2 id="逐行渲染">逐行渲染</h2>
+<p>在逐行渲染用户界面时，您需要实现 <a href="https://slint.dev/releases/1.3.0/docs/rust/slint/platform/software_renderer/trait.LineBufferProvider.html" target="_blank" rel="noopener noreffer "><code>LineBufferProvider</code></a> 特性。它在 Slint 和你的代码之间定义了一个双向接口，用于向屏幕发送线条：</p>
+<ul>
+<li>该特特性的相关 <code>TargetPixel</code> 类型可让 Slint 知道如何创建和处理像素。至于如何在设备中准确表示像素以及如何混合像素，这仍是您的具体实现细节。</li>
+<li>特性的 <code>process_line</code> 函数会在可以渲染某一行时通知您，并提供一个回调函数，您可以调用该函数为给定的行填充像素片。</li>
+</ul>
+<p>下面的示例定义了一个 <code>DisplayWrapper</code> 结构：它将实现 <a href="https://lib.rs/embedded-graphics" target="_blank" rel="noopener noreffer "><code>embedded_graphics</code></a> 特性的屏幕驱动程序与 Slint 的 <code>Rgb565Pixel</code> 类型连接起来，以实现 <code>LineBufferProvider</code> 特性。一行的像素通过调用 <a href="https://docs.rs/embedded-graphics/0.7.1/embedded_graphics/draw_target/trait.DrawTarget.html" target="_blank" rel="noopener noreffer "><code>DrawTarget::fill_contiguous</code></a> 函数发送到屏幕。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Rust" data-lang="Rust"><span class="line"><span class="cl"><span class="k">use</span><span class="w"> </span><span class="n">embedded_graphics_core</span>::<span class="p">{</span><span class="n">prelude</span>::<span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">primitives</span>::<span class="n">Rectangle</span><span class="p">,</span><span class="w"> </span><span class="n">pixelcolor</span>::<span class="n">raw</span>::<span class="n">RawU16</span><span class="p">};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">struct</span> <span class="nc">DisplayWrapper</span><span class="o">&lt;</span><span class="na">&#39;a</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">display</span>: <span class="kp">&amp;</span><span class="na">&#39;a</span> <span class="nc">mut</span><span class="w"> </span><span class="n">T</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">line_buffer</span>: <span class="kp">&amp;</span><span class="na">&#39;a</span> <span class="nc">mut</span><span class="w"> </span><span class="p">[</span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">software_renderer</span>::<span class="n">Rgb565Pixel</span><span class="p">],</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">impl</span><span class="o">&lt;</span><span class="n">T</span>: <span class="nc">DrawTarget</span><span class="o">&lt;</span><span class="n">Color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">embedded_graphics_core</span>::<span class="n">pixelcolor</span>::<span class="n">Rgb565</span><span class="o">&gt;&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">software_renderer</span>::<span class="n">LineBufferProvider</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">DisplayWrapper</span><span class="o">&lt;</span><span class="nb">&#39;_</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">type</span> <span class="nc">TargetPixel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">software_renderer</span>::<span class="n">Rgb565Pixel</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">fn</span> <span class="nf">process_line</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="bp">self</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">line</span>: <span class="kt">usize</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">range</span>: <span class="nc">core</span>::<span class="n">ops</span>::<span class="n">Range</span><span class="o">&lt;</span><span class="kt">usize</span><span class="o">&gt;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">render_fn</span>: <span class="nc">impl</span><span class="w"> </span><span class="nb">FnOnce</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="p">[</span><span class="bp">Self</span>::<span class="n">TargetPixel</span><span class="p">]),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// Render into the line
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="n">render_fn</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">line_buffer</span><span class="p">[</span><span class="n">range</span><span class="p">.</span><span class="n">clone</span><span class="p">()]);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// Send the line to the screen using DrawTarget::fill_contiguous
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">        </span><span class="bp">self</span><span class="p">.</span><span class="n">display</span><span class="p">.</span><span class="n">fill_contiguous</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="o">&amp;</span><span class="n">Rectangle</span>::<span class="n">new</span><span class="p">(</span><span class="n">Point</span>::<span class="n">new</span><span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">start</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">_</span><span class="p">),</span><span class="w"> </span><span class="n">Size</span>::<span class="n">new</span><span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">len</span><span class="p">()</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="bp">self</span><span class="p">.</span><span class="n">line_buffer</span><span class="p">[</span><span class="n">range</span><span class="p">.</span><span class="n">clone</span><span class="p">()].</span><span class="n">iter</span><span class="p">().</span><span class="n">map</span><span class="p">(</span><span class="o">|</span><span class="n">p</span><span class="o">|</span><span class="w"> </span><span class="n">RawU16</span>::<span class="n">new</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="mi">0</span><span class="p">).</span><span class="n">into</span><span class="p">())</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">).</span><span class="n">map_err</span><span class="p">(</span><span class="nb">drop</span><span class="p">).</span><span class="n">unwrap</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// Note that we use `ReusedBuffer` as parameter for MinimalSoftwareWindow to indicate
+</span></span></span><span class="line"><span class="cl"><span class="c1">// that we just need to re-render what changed since the last frame.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// What&#39;s shown on the screen buffer is not in our RAM, but actually within the display itself.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Only the changed part of the screen will be updated.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">let</span><span class="w"> </span><span class="n">window</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">software_renderer</span>::<span class="n">MinimalSoftwareWindow</span>::<span class="n">new</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">software_renderer</span>::<span class="n">RepaintBufferType</span>::<span class="n">ReusedBuffer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">const</span><span class="w"> </span><span class="no">DISPLAY_WIDTH</span>: <span class="kt">usize</span> <span class="o">=</span><span class="w"> </span><span class="mi">320</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">line_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">slint</span>::<span class="n">platform</span>::<span class="n">software_renderer</span>::<span class="n">Rgb565Pixel</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="no">DISPLAY_WIDTH</span><span class="p">];</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">display</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hal</span>::<span class="n">Display</span>::<span class="n">new</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// ... rest of initialization ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">loop</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">window</span><span class="p">.</span><span class="n">draw_if_needed</span><span class="p">(</span><span class="o">|</span><span class="n">renderer</span><span class="o">|</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">renderer</span><span class="p">.</span><span class="n">render_by_line</span><span class="p">(</span><span class="n">DisplayWrapper</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">display</span>: <span class="kp">&amp;</span><span class="nc">mut</span><span class="w"> </span><span class="n">display</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">line_buffer</span>: <span class="kp">&amp;</span><span class="nc">mut</span><span class="w"> </span><span class="n">line_buffer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">});</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">});</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>注意：根据我们的经验，使用同步 <code>DrawTarget::fill_contiguous</code> 函数会比较慢。如果您的设备能够使用 DMA，您可以通过使用两个行缓冲区来获得更好的性能：一个缓冲区使用 CPU 渲染，另一个缓冲区使用 DMA 异步传输到屏幕。</p>
+<h2 id="示例实现">示例实现</h2>
+<p>Slint 附带的示例使用了名为 <code>mcu-board-support</code> 的辅助板块。它为某些 MCU 提供了 Platform 特性的实现，以及对触摸输入和系统定时器的支持。</p>
+<p>您可以在我们的 Git 仓库中找到该 crate，网址是</p>
+<p><a href="https://github.com/slint-ui/slint/tree/master/examples/mcu-board-support" target="_blank" rel="noopener noreffer ">https://github.com/slint-ui/slint/tree/master/examples/mcu-board-support</a></p>
+<p>如果您的 MCU 是受欢迎的板子，那么您可以在 <code>Cargo.toml</code> 中将其指定为我们 Git 仓库中的依赖项。</p>
+<p>如需完整模板，请查看我们的 <a href="https://github.com/slint-ui/slint-mcu-rust-template" target="_blank" rel="noopener noreffer "><code>Slint Bare Metal Microcontroller Rust</code></a> 模板。</p>
+<p>我们还有一个适合小屏幕的打印机演示版本，即 <a href="https://github.com/slint-ui/slint/tree/master/examples/printerdemo_mcu" target="_blank" rel="noopener noreffer "><code>MCU 打印机演示</code></a>。</p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
