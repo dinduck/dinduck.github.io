@@ -13,6 +13,14 @@
     <description><![CDATA[Module slint::docs::mcu 微控制器上的 Slint 下文将介绍如何在裸机环境下使用 Slint 在微控制器 (MCU) 上开发用户界面。 准备 用 Rust 编写可在微控制器上运行的应用程序需要几个条件： 安装 Rust 工]]></description>
 </item>
 <item>
+    <title>CλaSH</title>
+    <link>https://dinduck.github.io/posts/c%CE%BBash/</link>
+    <pubDate>Tue, 21 Nov 2023 23:22:24 &#43;0800</pubDate>
+    <author>Lucky Ling</author>
+    <guid>https://dinduck.github.io/posts/c%CE%BBash/</guid>
+    <description><![CDATA[当前配置 Archlinux 确保你安装了 make 和 base-devel 安装 stack 安装 stack # Linux curl -sSL https://get.haskellstack.org/ | sh 安装完成后， 我们不需要管太多事情 运行以下命令生成一个简单的 基础项目 stack new my-clash-project clash-lang/simple cd my-clash-project 接着输入]]></description>
+</item>
+<item>
     <title>Ch32v307寄存器起步</title>
     <link>https://dinduck.github.io/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/</link>
     <pubDate>Sat, 18 Nov 2023 21:15:17 &#43;0800</pubDate>

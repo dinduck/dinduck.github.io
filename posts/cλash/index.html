@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>CλaSH - 傻鸟的窝</title><meta name="Description" content="基于 LoveIt 摆烂搭建"><meta property="og:title" content="CλaSH" />
+<meta property="og:description" content="当前配置 Archlinux 确保你安装了 make 和 base-devel 安装 stack 安装 stack # Linux curl -sSL https://get.haskellstack.org/ | sh 安装完成后， 我们不需要管太多事情 运行以下命令生成一个简单的 基础项目 stack new my-clash-project clash-lang/simple cd my-clash-project 接着输入" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dinduck.github.io/posts/c%CE%BBash/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-21T23:22:24+08:00" />
+<meta property="article:modified_time" content="2023-11-21T23:22:24+08:00" /><meta property="og:site_name" content="Lucky Ling" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CλaSH"/>
+<meta name="twitter:description" content="当前配置 Archlinux 确保你安装了 make 和 base-devel 安装 stack 安装 stack # Linux curl -sSL https://get.haskellstack.org/ | sh 安装完成后， 我们不需要管太多事情 运行以下命令生成一个简单的 基础项目 stack new my-clash-project clash-lang/simple cd my-clash-project 接着输入"/>
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dinduck.github.io/posts/c%CE%BBash/" /><link rel="prev" href="https://dinduck.github.io/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/" /><link rel="next" href="https://dinduck.github.io/posts/slint%E6%96%87%E6%A1%A3%E5%B0%8F%E8%AF%91/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "CλaSH",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dinduck.github.io\/posts\/c%CE%BBash\/"
+        },"genre": "posts","wordcount":  450 ,
+        "url": "https:\/\/dinduck.github.io\/posts\/c%CE%BBash\/","datePublished": "2023-11-21T23:22:24+08:00","dateModified": "2023-11-21T23:22:24+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "Lucky Ling"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="傻鸟的窝">My cool site</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="傻鸟的窝">My cool site</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">CλaSH</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Lucky Ling</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-11-21">2023-11-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;450 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#当前配置">当前配置</a></li>
+    <li><a href="#安装-stack">安装 <code>stack</code></a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="当前配置">当前配置</h2>
+<p><code>Archlinux</code></p>
+<p>确保你安装了 <code>make</code> 和 <code>base-devel</code></p>
+<h2 id="安装-stack">安装 <code>stack</code></h2>
+<p>安装 <code>stack</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1"># Linux</span>
+</span></span><span class="line"><span class="cl">curl -sSL https://get.haskellstack.org/ <span class="p">|</span> sh
+</span></span></code></pre></div><p>安装完成后， 我们不需要管太多事情</p>
+<p>运行以下命令生成一个简单的 基础项目</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">stack new my-clash-project clash-lang/simple
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> my-clash-project
+</span></span></code></pre></div><p>接着输入 <code>stack build</code> 构建这个基本项目</p>
+<p>第一次运行需要很久， 需要下载编译器和相关库， 所以耐心等待即可。</p>
+<p>默认会有一个示例文件  <code>src/Example/Project.hs</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Haskell" data-lang="Haskell"><span class="line"><span class="cl"><span class="kr">module</span> <span class="nn">Example.Project</span> <span class="p">(</span><span class="nf">topEntity</span><span class="p">,</span> <span class="nf">plus</span><span class="p">)</span> <span class="kr">where</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nn">Clash.Prelude</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- | Add two numbers. Example:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- &gt;&gt;&gt; plus 3 5</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- 8</span>
+</span></span><span class="line"><span class="cl"><span class="nf">plus</span> <span class="ow">::</span> <span class="kt">Signed</span> <span class="mi">8</span> <span class="ow">-&gt;</span> <span class="kt">Signed</span> <span class="mi">8</span> <span class="ow">-&gt;</span> <span class="kt">Signed</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl"><span class="nf">plus</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- | &#39;topEntity&#39; is Clash&#39;s equivalent of &#39;main&#39; in other programming</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- languages. Clash will look for it when compiling &#39;Example.Project&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- and translate it to HDL. While polymorphism can be used freely in</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- Clash projects, a &#39;topEntity&#39; must be monomorphic and must use non-</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- recursive types. Or, to put it hand-wavily, a &#39;topEntity&#39; must be</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- translatable to a static number of wires.</span>
+</span></span><span class="line"><span class="cl"><span class="nf">topEntity</span> <span class="ow">::</span> <span class="kt">Signed</span> <span class="mi">8</span> <span class="ow">-&gt;</span> <span class="kt">Signed</span> <span class="mi">8</span> <span class="ow">-&gt;</span> <span class="kt">Signed</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl"><span class="nf">topEntity</span> <span class="ow">=</span> <span class="n">plus</span>
+</span></span></code></pre></div><p>这是一个 8 位的加法器</p>
+<p>运行 <code>stack run clashi</code> 进入交互解释器</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/26/cpKyCSGLNgYR2ne.png"
+        data-srcset="https://s2.loli.net/2023/11/26/cpKyCSGLNgYR2ne.png, https://s2.loli.net/2023/11/26/cpKyCSGLNgYR2ne.png 1.5x, https://s2.loli.net/2023/11/26/cpKyCSGLNgYR2ne.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/26/cpKyCSGLNgYR2ne.png"
+        title="image.png" /></p>
+<p>使用 <code>:load</code> 加载 <code>hs</code> 文件， 这个交互解释器的使用不再赘述，学 <code>haskell</code> 时就知道了</p>
+<p>我们在 <code>src</code> 新建 <code>Mac.hs</code> 文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haskell" data-lang="haskell"><span class="line"><span class="cl"><span class="kr">module</span> <span class="nn">MAC</span> <span class="p">(</span><span class="nf">topEntity</span><span class="p">,</span> <span class="nf">ma</span><span class="p">)</span> <span class="kr">where</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nn">Clash.Prelude</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">ma</span> <span class="n">acc</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">=</span> <span class="n">acc</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">topEntity</span> <span class="ow">=</span> <span class="n">ma</span>
+</span></span></code></pre></div><p><code>topEntity</code> 类似 C语言的 <code>main</code> 函数， 显然我们的 <code>MAC.hs</code></p>
+<p>然后在 <code>my-clash-project.cabal</code> 文件 , 添加内容</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/26/UjHPKstcpZYJIGe.png"
+        data-srcset="https://s2.loli.net/2023/11/26/UjHPKstcpZYJIGe.png, https://s2.loli.net/2023/11/26/UjHPKstcpZYJIGe.png 1.5x, https://s2.loli.net/2023/11/26/UjHPKstcpZYJIGe.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/26/UjHPKstcpZYJIGe.png"
+        title="image.png" /></p>
+<p>运行 <code>stack run clash -- MAC --verilog</code></p>
+<p>会有特别多 <code>Warning</code>, 但是不影响编译通过。</p>
+<p>然后在 <code>verilog/MAC.topEntity/topEntity.v</code> 看见我们的 <code>verilog</code>  代码</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/26/HUKxMpurfdBAIFi.png"
+        data-srcset="https://s2.loli.net/2023/11/26/HUKxMpurfdBAIFi.png, https://s2.loli.net/2023/11/26/HUKxMpurfdBAIFi.png 1.5x, https://s2.loli.net/2023/11/26/HUKxMpurfdBAIFi.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/26/HUKxMpurfdBAIFi.png"
+        title="image.png" /></p>
+<p>这里是64位的两输入, 输出128位的相加结果。因为这里默认的类型是 <code>Integer</code></p>
+<p>相应如果你想要 <code>vhdl</code> 代码可以使用 <code>stack run clash -- MAC --vhdl</code></p>
+<p>更多信息请查看 <a href="https://hackage.haskell.org/package/clash-prelude-1.8.1/docs/Clash-Tutorial.html" target="_blank" rel="noopener noreffer "><code>Tutorial</code></a></p>
+<h2 id="参考">参考</h2>
+<p><a href="https://github.com/clash-lang/clash-starters/tree/main/simple#building-and-testing-this-project" target="_blank" rel="noopener noreffer ">Github</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-11-21</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dinduck.github.io/posts/c%CE%BBash/" data-title="CλaSH"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dinduck.github.io/posts/c%CE%BBash/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://dinduck.github.io/posts/c%CE%BBash/" data-title="CλaSH"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://dinduck.github.io/posts/c%CE%BBash/" data-title="CλaSH"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://dinduck.github.io/posts/c%CE%BBash/" data-title="CλaSH"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/ch32v307%E5%AF%84%E5%AD%98%E5%99%A8%E8%B5%B7%E6%AD%A5/" class="prev" rel="prev" title="Ch32v307寄存器起步"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Ch32v307寄存器起步</a>
+            <a href="/posts/slint%E6%96%87%E6%A1%A3%E5%B0%8F%E8%AF%91/" class="next" rel="next" title="Slint文档小译">Slint文档小译<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.120.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Lucky Ling</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
