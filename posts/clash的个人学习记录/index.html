@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title> - 傻鸟的窝</title><meta name="Description" content="基于 LoveIt 摆烂搭建"><meta property="og:title" content="" />
+<meta property="og:description" content="z&#43;&#43;&#43; title = &lsquo;Clash的个人学习记录&rsquo; date = 2023-11-28T21:34:25&#43;08:00 draft = true &#43;&#43;&#43; 第一个电路 新建一个文件 MAC.hs 第一行代码 module MAC where 定义一个名为 MAC 的模块 引入 Clash.Prelude import" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dinduck.github.io/posts/clash%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" /><meta property="article:section" content="posts" />
+
+<meta property="og:site_name" content="Lucky Ling" />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="z&#43;&#43;&#43; title = &lsquo;Clash的个人学习记录&rsquo; date = 2023-11-28T21:34:25&#43;08:00 draft = true &#43;&#43;&#43; 第一个电路 新建一个文件 MAC.hs 第一行代码 module MAC where 定义一个名为 MAC 的模块 引入 Clash.Prelude import"/>
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dinduck.github.io/posts/clash%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" /><link rel="next" href="https://dinduck.github.io/posts/test_post/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dinduck.github.io\/posts\/clash%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95\/"
+        },"genre": "posts","wordcount":  969 ,
+        "url": "https:\/\/dinduck.github.io\/posts\/clash%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95\/","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "Lucky Ling"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="傻鸟的窝">My cool site</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="傻鸟的窝">My cool site</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX"></h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Lucky Ling</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="0001-01-01">0001-01-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;969 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#第一个电路">第一个电路</a></li>
+    <li><a href="#同步时序电路">同步时序电路</a></li>
+    <li><a href="#生成-vhdl">生成 VHDL</a></li>
+    <li><a href="#verilator">Verilator</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>z+++
+title = &lsquo;Clash的个人学习记录&rsquo;
+date = 2023-11-28T21:34:25+08:00
+draft = true
++++</p>
+<h2 id="第一个电路">第一个电路</h2>
+<ul>
+<li>新建一个文件 <code>MAC.hs</code></li>
+<li>第一行代码</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Haskell" data-lang="Haskell"><span class="line"><span class="cl"><span class="kr">module</span> <span class="nn">MAC</span> <span class="kr">where</span>
+</span></span></code></pre></div><p>定义一个名为 <code>MAC</code> 的模块</p>
+<ul>
+<li>引入 <code>Clash.Prelude</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-HAskell" data-lang="HAskell"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nn">Clash.Prelude</span>
+</span></span></code></pre></div><p>引入 <code>Clash</code> 通用的一些模块, 例如 <code>Sinal</code>, <code>NFDataX</code> 等等</p>
+<p>最后我们开始第一句代码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Haskell" data-lang="Haskell"><span class="line"><span class="cl"><span class="nf">ma</span> <span class="n">acc</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">=</span> <span class="n">acc</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+</span></span></code></pre></div><p>我们定义一个名为 <code>ma</code> 的函数， 显然目前还用上 <code>Clash</code> 的功能， 稍后我们会处理。</p>
+<p>进入 <code>clashi</code> 交互界面加载 <code>MAC.hs</code> 文件</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/28/1NIZLjwRh59Ol4k.png"
+        data-srcset="https://s2.loli.net/2023/11/28/1NIZLjwRh59Ol4k.png, https://s2.loli.net/2023/11/28/1NIZLjwRh59Ol4k.png 1.5x, https://s2.loli.net/2023/11/28/1NIZLjwRh59Ol4k.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/28/1NIZLjwRh59Ol4k.png"
+        title="image.png" /></p>
+<p>目前为止， 至少没报错， 但是这里并没有使用上 <code>Clash</code> 的任何东西。</p>
+<h2 id="同步时序电路">同步时序电路</h2>
+<p>我们编写一个符合 <code>mealy</code> 机器的函数, 我们可以从<a href="https://hackage.haskell.org/package/clash-prelude-1.8.1/docs/Clash-Prelude.html" target="_blank" rel="noopener noreffer ">官方参考文档</a>找到相关信息。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/28/SjNbm4TJx87YHVA.png"
+        data-srcset="https://s2.loli.net/2023/11/28/SjNbm4TJx87YHVA.png, https://s2.loli.net/2023/11/28/SjNbm4TJx87YHVA.png 1.5x, https://s2.loli.net/2023/11/28/SjNbm4TJx87YHVA.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/28/SjNbm4TJx87YHVA.png"
+        title="image.png" /></p>
+<p>他的用途是 <code>state -&gt; input -&gt; (new_state, output)</code></p>
+<p>输入当前状态和输入返回新的状态和输出</p>
+<p>编辑 <code>MAC.hs</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Haskell" data-lang="Haskell"><span class="line"><span class="cl"><span class="nf">macT</span> <span class="n">acc</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">=</span> <span class="p">(</span><span class="n">acc&#39;</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">where</span>
+</span></span><span class="line"><span class="cl">    <span class="n">acc&#39;</span> <span class="ow">=</span> <span class="n">ma</span> <span class="n">acc</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">o</span>    <span class="ow">=</span> <span class="n">acc</span>
+</span></span></code></pre></div><p>显然我们也可以这样去写  <code>MAC.hs</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Haskell" data-lang="Haskell"><span class="line"><span class="cl"><span class="nf">macT</span> <span class="n">acc</span> <span class="n">inp</span> <span class="ow">=</span> <span class="p">(</span><span class="n">ma</span> <span class="n">acc</span> <span class="n">inp</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>Haskell</code> 会自动推断  <code>inp</code> 为 <code>Num a =&gt; (a, a)</code></p>
+<p>观察一下 <code>macT</code> 的类型</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/28/d5tJI4XFCBnOuoQ.png"
+        data-srcset="https://s2.loli.net/2023/11/28/d5tJI4XFCBnOuoQ.png, https://s2.loli.net/2023/11/28/d5tJI4XFCBnOuoQ.png 1.5x, https://s2.loli.net/2023/11/28/d5tJI4XFCBnOuoQ.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/28/d5tJI4XFCBnOuoQ.png"
+        title="image.png" /></p>
+<p>现在开始使用 <code>Clash</code> 的东西， 也就是 <code>mealy</code>， 其实就是一句话</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Haskell" data-lang="Haskell"><span class="line"><span class="cl"><span class="nf">mac</span> <span class="n">xy</span> <span class="ow">=</span> <span class="n">mealy</span> <span class="n">macT</span> <span class="mi">0</span> <span class="n">xy</span>
+</span></span></code></pre></div><p>我们又新建一个函数， 他绑定了 <code>mealy macT 0 xy</code>, 在这里 <code>ma</code> 和 <code>macT</code> 函数都没有对参数的类型进行约束， 但是 <code>mealy</code> 在这里就会对 <code>macT</code> 的参数进行约束。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/28/dGSxbsC9jFJmcuv.png"
+        data-srcset="https://s2.loli.net/2023/11/28/dGSxbsC9jFJmcuv.png, https://s2.loli.net/2023/11/28/dGSxbsC9jFJmcuv.png 1.5x, https://s2.loli.net/2023/11/28/dGSxbsC9jFJmcuv.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/28/dGSxbsC9jFJmcuv.png"
+        title="image.png" /></p>
+<p>对我们来说，只需要关心流程， 最后我们使用  <code>Clash</code>  约束我们的逻辑， 使其为数字电路的逻辑范畴。</p>
+<p>测试以下我们的函数功能</p>
+<pre tabindex="0"><code>&gt;&gt;&gt; import qualified Data.List as L
+&gt;&gt;&gt; L.take 4 $ simulate @System mac [(1,1),(2,2),(3,3),(4,4)]
+[0, 1, 5, 14]
+</code></pre><h2 id="生成-vhdl">生成 VHDL</h2>
+<p>生成 <code>VHDL</code> 的命令是 <code>:vhdl</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/28/rXxJcehPYdVbwDa.png"
+        data-srcset="https://s2.loli.net/2023/11/28/rXxJcehPYdVbwDa.png, https://s2.loli.net/2023/11/28/rXxJcehPYdVbwDa.png 1.5x, https://s2.loli.net/2023/11/28/rXxJcehPYdVbwDa.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/28/rXxJcehPYdVbwDa.png"
+        title="image.png" /></p>
+<p>这里说没有 <code>topEntity</code> 函数， 其实这是我们标准入口函数， 类似C语言的 <code>main</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Haskell" data-lang="Haskell"><span class="line"><span class="cl"><span class="nf">topEntity</span>
+</span></span><span class="line"><span class="cl">  <span class="ow">::</span> <span class="kt">Clock</span> <span class="kt">System</span>
+</span></span><span class="line"><span class="cl">  <span class="ow">-&gt;</span> <span class="kt">Reset</span> <span class="kt">System</span>
+</span></span><span class="line"><span class="cl">  <span class="ow">-&gt;</span> <span class="kt">Enable</span> <span class="kt">System</span>
+</span></span><span class="line"><span class="cl">  <span class="ow">-&gt;</span> <span class="kt">Signal</span> <span class="kt">System</span> <span class="p">(</span><span class="kt">Signed</span> <span class="mi">9</span><span class="p">,</span> <span class="kt">Signed</span> <span class="mi">9</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="ow">-&gt;</span> <span class="kt">Signal</span> <span class="kt">System</span> <span class="p">(</span><span class="kt">Signed</span> <span class="mi">9</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nf">topEntity</span> <span class="ow">=</span> <span class="n">exposeClockResetEnable</span> <span class="n">mac</span>
+</span></span></code></pre></div><p>显然一个时序电路应该存在时钟系统，复位系统， 使能系统， 信号系统。</p>
+<p>这里具有五个参数， <code>exposeClockResetEnable</code> ， 这个是一个暴露时钟，复位，使能系统的组件</p>
+<p>对于 <code>topEntity</code> 标志 VHDL 的起点，<code>topEntity</code> 应该满足以下条件</p>
+<ul>
+<li>必须完全单态</li>
+<li>必须完全一阶</li>
+<li>尽管并非绝对必要，但建议公开隐藏的时钟和复位参数，因为这样可以更容易地在生成的 HDL 中进行用户控制的名称分配。</li>
+</ul>
+<p>好吧， 现在你可以使用 <code>:verilog</code> 、 <code>:vhdl</code> 、<code>:systemverilog</code> 生成相应的文件</p>
+<h2 id="verilator">Verilator</h2>
+<p>这里是番外</p>
+<p>生成的 <code>verilog</code> 文件如下</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://s2.loli.net/2023/11/29/e8FnuahzPXmyq7Q.png"
+        data-srcset="https://s2.loli.net/2023/11/29/e8FnuahzPXmyq7Q.png, https://s2.loli.net/2023/11/29/e8FnuahzPXmyq7Q.png 1.5x, https://s2.loli.net/2023/11/29/e8FnuahzPXmyq7Q.png 2x"
+        data-sizes="auto"
+        alt="https://s2.loli.net/2023/11/29/e8FnuahzPXmyq7Q.png"
+        title="image.png" /></p>
+<p>我们可以使用 <code>Verilator</code> 编译, 确保安装了 <code>Verilator</code></p>
+<p>首先编译 <code>topEntity.v</code> 文件， 输出 <code>cpp</code> 源码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">verilator -cc topEntity.v
+</span></span></code></pre></div><p><code>topEntity_shim.cpp</code> 这个是模拟的程序文件, 参考 <code>Verilator</code> 官方文档进行修改， 比如输出时序图， 然后通过 <code>GTKWare</code> 查看， 这里是没有默认生成 <code>vcd</code> 文件的。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cstdlib&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;verilated.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;VtopEntity.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Verilated</span><span class="o">::</span><span class="n">commandArgs</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">VtopEntity</span> <span class="o">*</span><span class="n">top</span> <span class="o">=</span> <span class="k">new</span> <span class="n">VtopEntity</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">Verilated</span><span class="o">::</span><span class="n">gotFinish</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">top</span><span class="o">-&gt;</span><span class="n">eval</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">top</span><span class="o">-&gt;</span><span class="k">final</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">delete</span> <span class="n">top</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>关于 <code>Verilator</code> 的简易教程可以参考 <a href="https://itsembedded.com/dhd/verilator_1/" target="_blank" rel="noopener noreffer "><code>这里</code></a>， 这小段也是参考这篇文章。</p>
+<p>执行</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">verilator -Wall --trace -cc topEntity.v --exe topEntity_shim.cpp
+</span></span></code></pre></div><p>然后使用 <code>make</code> 构建</p>
+<pre tabindex="0"><code>make -C obj_dir -f VtopEntity.mk
+</code></pre><p>他会默认构建 <code>VtopEntity</code> 这个可执行文件</p>
+<p><code>./obj_dir/VtopEntity </code> 运行程序， 目前来说程序一直执行， 并不会主动退出， 所以 <code>C-c</code> 退出吧， 本人学识有限， 目前还未会使用 <code>Verilator</code></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 0001-01-01</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dinduck.github.io/posts/clash%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" data-title=""><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dinduck.github.io/posts/clash%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://dinduck.github.io/posts/clash%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" data-title=""><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://dinduck.github.io/posts/clash%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" data-title=""><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://dinduck.github.io/posts/clash%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" data-title=""><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+            <a href="/posts/test_post/" class="next" rel="next" title="Test_post">Test_post<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.121.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Lucky Ling</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

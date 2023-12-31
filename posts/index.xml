@@ -4,7 +4,15 @@
         <link>https://dinduck.github.io/posts/</link>
         <description>All Posts | 傻鸟的窝</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>kfove.liang@protonmail.com (Lucky Ling)</managingEditor>
-            <webMaster>kfove.liang@protonmail.com (Lucky Ling)</webMaster><lastBuildDate>Wed, 22 Nov 2023 16:13:53 &#43;0800</lastBuildDate><atom:link href="https://dinduck.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>kfove.liang@protonmail.com (Lucky Ling)</webMaster><lastBuildDate>Sun, 31 Dec 2023 14:36:02 &#43;0800</lastBuildDate><atom:link href="https://dinduck.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>NixOS安装</title>
+    <link>https://dinduck.github.io/posts/nixos%E5%AE%89%E8%A3%85/</link>
+    <pubDate>Sun, 31 Dec 2023 14:36:02 &#43;0800</pubDate>
+    <author>Lucky Ling</author>
+    <guid>https://dinduck.github.io/posts/nixos%E5%AE%89%E8%A3%85/</guid>
+    <description><![CDATA[下载镜像 前往[官网下载 我这里下载最小的镜像文件, 根据机器下载 安装 基础工作 这里使用虚拟机， 实体机等虚拟机把Nix配置搞清楚后在自行折腾， 大致的]]></description>
+</item>
+<item>
     <title>Slint文档小译</title>
     <link>https://dinduck.github.io/posts/slint%E6%96%87%E6%A1%A3%E5%B0%8F%E8%AF%91/</link>
     <pubDate>Wed, 22 Nov 2023 16:13:53 &#43;0800</pubDate>
@@ -35,6 +43,14 @@
     <author>Lucky Ling</author>
     <guid>https://dinduck.github.io/posts/test_post/</guid>
     <description><![CDATA[Test Hello Hugo ]]></description>
+</item>
+<item>
+    <title></title>
+    <link>https://dinduck.github.io/posts/clash%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</link>
+    <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate>
+    <author>Lucky Ling</author>
+    <guid>https://dinduck.github.io/posts/clash%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</guid>
+    <description><![CDATA[z+++ title = &lsquo;Clash的个人学习记录&rsquo; date = 2023-11-28T21:34:25+08:00 draft = true +++ 第一个电路 新建一个文件 MAC.hs 第一行代码 module MAC where 定义一个名为 MAC 的模块 引入 Clash.Prelude import]]></description>
 </item>
 </channel>
 </rss>
